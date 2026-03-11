@@ -15,14 +15,14 @@ Task from lesson 1. Filters a list of people from the Hub, classifies their jobs
 ```mermaid
 flowchart TD
     A[Download people.csv from Hub] --> B[Filter: male / Grudziądz / age 20-40]
-    B --> C{For each person}
-    C --> D[Send job description to AI model]
-    D --> E[Structured Output: assign tags]
+    B --> C[Send all job descriptions as numbered list - 1 API call]
+    C --> D[Structured Output: assign tags per index]
+    D --> E{For each person}
     E --> F{tag = transport?}
     F -- yes --> G[Add to results]
-    F -- no --> C
-    G --> C
-    C --> H[POST results to /verify]
+    F -- no --> E
+    G --> E
+    E --> H[POST results to /verify]
     H --> I[Receive flag]
 ```
 
