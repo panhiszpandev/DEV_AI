@@ -13,26 +13,40 @@ from shared.hub_client import verify, get_data, HUB_KEY
 with open(os.path.join(os.path.dirname(__file__), "prompts/tagger.md")) as f:
     SYSTEM_PROMPT = f.read()
 
-# --- JSON schema for Structured Output ---
+# --- JSON schema for Structured Output (batch: list of results) ---
 TAGS_SCHEMA = {
     "type": "object",
     "properties": {
-        "tags": {
+        "results": {
             "type": "array",
             "items": {
-                "type": "string",
-                "enum": ["IT", "transport", "edukacja", "medycyna", "praca z ludźmi", "praca z pojazdami", "praca fizyczna"],
+                "type": "object",
+                "properties": {
+                    "index": {"type": "integer"},
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": ["IT", "transport", "edukacja", "medycyna", "praca z ludźmi", "praca z pojazdami", "praca fizyczna"],
+                        },
+                    },
+                },
+                "required": ["index", "tags"],
+                "additionalProperties": False,
             },
         }
     },
-    "required": ["tags"],
+    "required": ["results"],
     "additionalProperties": False,
 }
 
 
-def get_tags(job_description: str) -> list[str]:
-    result = ask_json(SYSTEM_PROMPT, job_description, TAGS_SCHEMA)
-    return result["tags"]
+def get_tags_batch(people: list) -> dict:
+    # Build numbered list of job descriptions for the model
+    jobs_list = "\n".join(f"{i}. {p['job']}" for i, p in enumerate(people))
+    result = ask_json(SYSTEM_PROMPT, jobs_list, TAGS_SCHEMA)
+    # Return a dict: index -> tags
+    return {item["index"]: item["tags"] for item in result["results"]}
 
 
 def calculate_age(birth_year: int) -> int:
@@ -47,7 +61,7 @@ def main():
     people = list(reader)
     print(f"Fetched {len(people)} people")
 
-    # 2. Filter: male, born in Grudziądz, age 20-40 in 2026
+    # 2. Filter: male, born in Grudziądz, age 20-40
     filtered = [
         p for p in people
         if p.get("gender", "").upper() == "M"
@@ -56,10 +70,14 @@ def main():
     ]
     print(f"After filtering: {len(filtered)} people")
 
-    # 3. Tag each person's job using the model
+    # 3. Tag all jobs in a single API call
+    print("Classifying jobs (1 API call)...")
+    tagged = get_tags_batch(filtered)
+
+    # 4. Keep only people tagged with 'transport'
     results = []
-    for person in filtered:
-        tags = get_tags(person["job"])
+    for i, person in enumerate(filtered):
+        tags = tagged.get(i, [])
         if "transport" in tags:
             results.append({
                 "name": person["name"],
@@ -73,7 +91,7 @@ def main():
     print(f"Found {len(results)} people with 'transport' tag")
     print(results)
 
-    # 4. Send answer to Hub
+    # 5. Send answer to Hub
     verify("people", results)
 
 
