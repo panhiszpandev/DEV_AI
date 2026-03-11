@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 .DS_Store
 lessons/
+s01e01/data/
