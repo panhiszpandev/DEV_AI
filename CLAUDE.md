@@ -12,6 +12,15 @@ AI programming course in Python. 5 weeks, one lesson per working day.
 - `s01e01/`, `s01e02/`, ... - task solution folders
   - `main.py` - script to run
   - `prompts/` - task-specific prompts
+  - `README.md` - task description with flow diagram (Mermaid)
+
+## Creating a new lesson folder
+
+When creating a new lesson folder (e.g. `s01e03/`), always include a `README.md` following the same structure as `s01e01/README.md`:
+- short description of what the program does
+- numbered list of steps
+- Mermaid flow diagram
+- run instructions
 
 ## API keys
 
