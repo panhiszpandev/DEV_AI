@@ -49,7 +49,8 @@ def get_tags_batch(people: list) -> dict:
     return {item["index"]: item["tags"] for item in result["results"]}
 
 
-def calculate_age(birth_year: int) -> int:
+def calculate_age(birth_date: str) -> int:
+    birth_year = int(birth_date.split("-")[0])
     return date.today().year - birth_year
 
 
@@ -65,8 +66,8 @@ def main():
     filtered = [
         p for p in people
         if p.get("gender", "").upper() == "M"
-        and p.get("city", "").lower() == "grudziądz"
-        and 20 <= calculate_age(int(p["born"])) <= 40
+        and p.get("birthPlace", "").lower() == "grudziądz"
+        and 20 <= calculate_age(p["birthDate"]) <= 40
     ]
     print(f"After filtering: {len(filtered)} people")
 
@@ -83,8 +84,8 @@ def main():
                 "name": person["name"],
                 "surname": person["surname"],
                 "gender": person["gender"].upper(),
-                "born": int(person["born"]),
-                "city": person["city"],
+                "born": int(person["birthDate"].split("-")[0]),
+                "city": person["birthPlace"],
                 "tags": tags,
             })
 
