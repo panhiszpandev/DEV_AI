@@ -2,6 +2,7 @@ import sys
 import os
 import csv
 import io
+import json
 from datetime import date
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -90,9 +91,15 @@ def main():
             })
 
     print(f"Found {len(results)} people with 'transport' tag")
-    print(results)
 
-    # 5. Send answer to Hub
+    # 5. Save results to file
+    output_path = os.path.join(os.path.dirname(__file__), "data/transport_people.json")
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(results, f, ensure_ascii=False, indent=2)
+    print(f"Saved to {output_path}")
+
+    # 6. Send answer to Hub
     verify("people", results)
 
 
