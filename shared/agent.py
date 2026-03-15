@@ -17,7 +17,8 @@ def run_agent(system_prompt: str, task: str, tools: list, model: str = "gpt-4o")
     tool_definitions = [{"type": "function", "function": t["schema"]} for t in tools]
     tool_map = {t["schema"]["name"]: t["callback"] for t in tools}
 
-    while True:
+    max_iterations = 10
+    for iteration in range(max_iterations):
         response = client.chat.completions.create(
             model=model,
             messages=messages,
@@ -41,3 +42,5 @@ def run_agent(system_prompt: str, task: str, tools: list, model: str = "gpt-4o")
                 "tool_call_id": tool_call.id,
                 "content": json.dumps(result, ensure_ascii=False),
             })
+
+    raise RuntimeError(f"Agent exceeded maximum iterations ({max_iterations})")
