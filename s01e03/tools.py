@@ -12,14 +12,15 @@ PACKAGES_URL = "https://hub.ag3nts.org/api/packages"
 # --- Callbacks ---
 
 def check_package(packageid: str) -> dict:
-    response = requests.post(PACKAGES_URL, json={"apikey": HUB_KEY, "id": packageid})
+    response = requests.post(PACKAGES_URL, json={"apikey": HUB_KEY, "action": "check", "packageid": packageid})
     return response.json()
 
 
 def redirect_package(packageid: str, destination: str, code: str) -> dict:
     response = requests.post(PACKAGES_URL, json={
         "apikey": HUB_KEY,
-        "id": packageid,
+        "action": "redirect",
+        "packageid": packageid,
         "destination": destination,
         "code": code,
     })
