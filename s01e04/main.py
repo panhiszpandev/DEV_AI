@@ -11,10 +11,16 @@ from shared.hub_client import verify
 
 DOC_BASE = "https://hub.ag3nts.org/dane/doc"
 PROMPTS_DIR = os.path.join(os.path.dirname(__file__), "prompts")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 
 def load_prompt(filename: str) -> str:
     with open(os.path.join(PROMPTS_DIR, filename)) as f:
+        return f.read()
+
+
+def load_data(filename: str) -> str:
+    with open(os.path.join(DATA_DIR, filename)) as f:
         return f.read()
 
 
@@ -65,7 +71,7 @@ def extract_file_lists(index_content: str) -> tuple[list[str], list[str]]:
 def fill_declaration(docs: str, images: list[tuple[str, str]]) -> str:
     """Asks LLM (with vision) to fill the declaration based on all docs."""
     system_prompt = load_prompt("system.md")
-    shipment = load_prompt("shipment.md").format(date=date.today().isoformat())
+    shipment = load_data("shipment.md").format(date=date.today().isoformat())
 
     content = [
         {"type": "text", "text": f"SPK documentation:\n\n{docs}"},
