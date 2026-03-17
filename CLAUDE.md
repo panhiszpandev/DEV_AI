@@ -11,7 +11,8 @@ AI programming course in Python. 5 weeks, one lesson per working day.
 - `prompts/` - shared system prompts in .md files
 - `s01e01/`, `s01e02/`, ... - task solution folders
   - `main.py` - script to run
-  - `prompts/` - task-specific prompts
+  - `prompts/` - task-specific system prompts
+  - `data/` - task input data (parameters, shipment details, etc.) — not prompts
   - `README.md` - task description with flow diagram (Mermaid)
 
 ## Creating a new lesson folder
