@@ -1,0 +1,15 @@
+import os
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+
+from shared.ai_client import ask
+from shared.hub_client import verify, get_data
+
+
+def main():
+    pass
+
+
+if __name__ == "__main__":
+    main()
