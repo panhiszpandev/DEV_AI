@@ -39,6 +39,10 @@ python main.py
 
 Use `hub_client.verify(task, answer)`. Response contains a flag in format `{FLG:...}`.
 
+## Language
+
+All code, comments, prompts, and documentation must be written in English. Exception: data values sent to external servers (e.g. city names, shipment contents, API payloads) should remain as-is.
+
 ## Local config
 
 See `.claude-private.md` for additional instructions (local only, not in git).
