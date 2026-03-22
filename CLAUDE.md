@@ -10,8 +10,11 @@ AI programming course in Python. 5 weeks, one lesson per working day.
   - `hub_client.py` - hub.ag3nts.org client (functions `verify` and `get_data`)
 - `prompts/` - shared system prompts in .md files
 - `s01e01/`, `s01e02/`, ... - task solution folders
-  - `main.py` - script to run
-  - `prompts/` - task-specific system prompts
+  - `main.py` - script to run (no `load_dotenv()` — handled by shared modules)
+  - `prompts/` - task-specific prompts in .md files
+    - `system.md` - system prompt for the agent
+    - `task.md` - user/task prompt (if using agent loop)
+  - `tools/` - tool classes, one per file, each with `schema()` and `run()` methods
   - `data/` - task input data (parameters, shipment details, etc.) — not prompts
   - `README.md` - task description with flow diagram (Mermaid)
 
