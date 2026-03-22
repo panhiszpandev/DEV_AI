@@ -13,7 +13,7 @@ class VisionAnalyzer:
 
     def analyze_tile(self, img: Image.Image) -> frozenset:
         b64 = self._to_base64(img)
-        raw = ask_vision(self._system_prompt, b64, "Describe the cable exits in clock notation.")
+        raw = ask_vision(self._system_prompt, b64, "Describe the cable exits in clock notation.", model="google/gemini-2.5-pro-preview-03-25")
         return self._parse(raw)
 
     def _to_base64(self, img: Image.Image) -> str:
