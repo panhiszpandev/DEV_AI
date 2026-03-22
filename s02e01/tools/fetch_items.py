@@ -10,7 +10,7 @@ class FetchItemsTool:
     def run(self) -> list[dict]:
         resp = get_data(f"/data/{HUB_KEY}/categorize.csv")
         reader = csv.DictReader(io.StringIO(resp.text))
-        items = [{"id": row["id"], "description": row["description"]} for row in reader]
+        items = [{"id": row["code"], "description": row["description"]} for row in reader]
         print(f"  Fetched {len(items)} items")
         for item in items:
             print(f"    [{item['id']}] {item['description']}")
