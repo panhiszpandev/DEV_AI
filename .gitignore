@@ -5,4 +5,6 @@ __pycache__/
 .DS_Store
 lessons/
 s01e01/data/
+s02e02/data/*.png
 .venv/
+*/data/
