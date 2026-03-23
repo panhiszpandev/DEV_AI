@@ -18,10 +18,11 @@ class ImageProcessor:
         w, h = img.size
         cw, ch = w // 3, h // 3
         cells = {}
+        pad = 6
         for row in range(1, 4):
             for col in range(1, 4):
                 cell = img.crop(
-                    ((col - 1) * cw, (row - 1) * ch, col * cw, row * ch)
+                    ((col - 1) * cw + pad, (row - 1) * ch + pad, col * cw - pad, row * ch - pad)
                 )
                 cells[f"{row}x{col}"] = cell
         return cells

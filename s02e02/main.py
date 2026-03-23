@@ -52,6 +52,12 @@ def main():
     current_cells = processor.split_into_cells(current_img)
     target_cells = processor.split_into_cells(target_img)
 
+    DATA_DIR.mkdir(exist_ok=True)
+    for cell_id, img in current_cells.items():
+        img.save(DATA_DIR / f"current_{cell_id}.png")
+    for cell_id, img in target_cells.items():
+        img.save(DATA_DIR / f"target_{cell_id}.png")
+
     # 3. Analyze all 18 tiles with vision model
     print("\n=== Analyzing current grid ===")
     current_grid = {}
