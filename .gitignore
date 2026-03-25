@@ -7,4 +7,5 @@ lessons/
 s01e01/data/
 s02e02/data/*.png
 .venv/
+venv/
 */data/
