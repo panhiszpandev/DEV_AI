@@ -6,4 +6,5 @@ Your task:
 3. Submit using `submit_logs` and read the technician feedback
 4. Iterate based on feedback until you receive the flag
 
-Start by searching for CRIT and ERRO events to understand the failure timeline.
+Known components to cover: ECCS8, WTANK07, WTRPMP, PWR01, STMTURB12, WSTPOOL2, FIRMWARE.
+Start by searching for all CRIT events to understand the failure timeline.
