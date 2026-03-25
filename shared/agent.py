@@ -2,13 +2,22 @@ import json
 from shared.ai_client import client
 
 
-def run_agent(system_prompt: str, task: str, tools: list, model: str = "gpt-4o") -> str:
+def run_agent(system_prompt: str, task: str, tools: list, model: str = "gpt-4o", max_iterations: int = 10) -> str:
     """
     Runs a function calling loop until the model stops calling tools.
 
     Each tool in the list must have:
     - "schema": dict with name, description, parameters (OpenAI function schema)
     - "callback": callable that executes the tool and returns a result
+
+    Args:
+        system_prompt:  System prompt defining the agent's role and instructions.
+        task:           Initial user message / task description.
+        tools:          List of tool dicts with "schema" and "callback" keys.
+        model:          OpenRouter model ID to use.
+        max_iterations: Maximum number of LLM calls before raising RuntimeError.
+                        Increase for agents with long feedback loops (e.g. 20-30).
+                        Can be set from CLI: python main.py --max-iterations 20
     """
     messages = [
         {"role": "system", "content": system_prompt},
@@ -17,7 +26,6 @@ def run_agent(system_prompt: str, task: str, tools: list, model: str = "gpt-4o")
     tool_definitions = [{"type": "function", "function": t["schema"]} for t in tools]
     tool_map = {t["schema"]["name"]: t["callback"] for t in tools}
 
-    max_iterations = 10
     for iteration in range(max_iterations):
         response = client.chat.completions.create(
             model=model,
